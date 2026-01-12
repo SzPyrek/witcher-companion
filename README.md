@@ -1,3 +1,5 @@
+# Witcher Token Manager
+
 Prosta i lekka aplikacja webowa wspomagająca rozgrywkę w grę planszową **Wiedźmin: Stary Świat**.
 
 Służy do losowania numerów żetonów obszarów oraz żetonów słabości bez konieczności ciągłego tasowania i wyciągania fizycznych elementów z pudełka.
