@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a252f">
     
-    <title>Witcher Companion</title>
+    <title>Wiedźmin: Stary Świat - Helper</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -36,8 +36,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 90vh;
+            min-height: 90vh;
             gap: 20px;
+            padding-top: 20px;
         }
 
         .menu-btn {
@@ -121,11 +122,11 @@
         .p-name { font-size: 0.9rem; color: #bdc3c7; }
         .w-school { font-size: 1.2rem; font-weight: bold; color: #ecf0f1; }
 
-/* Kolory szkół */
+        /* Kolory szkół */
         .school-wilk { border-color: #8d6e63; color: #d7ccc8; }      /* Brązowy */
-        .school-kot { border-color: #3867d6; color: #a5b1de; }       /* Granatowy (rozjaśniony dla czytelności) */
+        .school-kot { border-color: #3867d6; color: #a5b1de; }       /* Granatowy */
         .school-zmija { border-color: #27ae60; color: #a3e4b3; }     /* Zielony */
-        .school-gryf { border-color: #f1c40f; color: #f9e79f; }      /* Złoty/Żółty */
+        .school-gryf { border-color: #f1c40f; color: #f9e79f; }      /* Złoty */
         .school-niedzwiedz { border-color: #c0392b; color: #e6b0aa; }/* Czerwony */
         .school-mantikora { border-color: #e67e22; color: #edbb99; } /* Pomarańczowy */
 
@@ -142,7 +143,7 @@
         .panel.weakness-panel { background-color: #303841; border: 1px dashed #546e7a; }
         .panel h3 { margin: 0 0 8px 0; font-size: 0.9rem; color: #bdc3c7; }
         .result-box { background-color: #22303d; border-radius: 6px; padding: 10px 0; margin-bottom: 10px; border: 1px solid #465f75; min-height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .result { font-size: 36px; font-weight: bold; color: #f1c40f; line-height: 1; }
+        .result { font-size: 36px; font-weight: bold; color: #f1c40f; line-height: 1; padding: 0 5px; word-wrap: break-word;}
         .weakness-panel .result { color: #9b59b6; font-family: 'Times New Roman', serif; font-size: 42px; }
         .status { font-size: 11px; color: #7f8c8d; margin-top: 5px; }
         button.draw-btn { background-color: #e67e22; color: white; border: none; padding: 14px 0; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 6px; width: 100%; touch-action: manipulation; }
@@ -155,24 +156,75 @@
         .token { background-color: #95a5a6; color: #2c3e50; font-weight: bold; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; user-select: none; border: 1px solid #7f8c8d; }
         .weakness-panel .token { background-color: #574b90; color: #ecf0f1; font-family: 'Times New Roman', serif; border: 1px solid #303841; }
 
+        /* --- NOWE STYLE DLA POTWORÓW --- */
+        .title-lvl1 { color: #ffab91; }
+        .title-lvl2 { color: #ef5350; }
+        .title-lvl3 { color: #c62828; }
+
+        /* Dodatkowe klasy dla kolorów przycisków i etykiet */
+        .btn-lvl1 { background-color: #ffab91; color: #2c3e50; }
+        .btn-lvl1:active { background-color: #e69a8d; }
+        .label-lvl1 { color: #ffab91; }
+
+        .btn-lvl2 { background-color: #ef5350; color: #ecf0f1; }
+        .btn-lvl2:active { background-color: #d32f2f; }
+        .label-lvl2 { color: #ef5350; }
+
+        .btn-lvl3 { background-color: #c62828; color: #ecf0f1; }
+        .btn-lvl3:active { background-color: #b71c1c; }
+        .label-lvl3 { color: #c62828; }
+
+
+        .monster-token {
+            background-color: #34495e; 
+            color: #ecf0f1; 
+            border: 1px solid #7f8c8d;
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            font-size: 13px;
+            cursor: default;
+            user-select: none;
+            opacity: 0.7;
+        }
+
+        .reset-monsters-btn {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .reset-monsters-btn:active { background-color: #a93226; }
+
     </style>
 </head>
 <body>
 
     <div id="view-menu" class="app-section active-section">
         <div class="main-menu-container">
-        <h1>Wiedźmin: Stary Świat<br>
+            <h1>Wiedźmin: Stary Świat<br>
                 <span style="font-size: 0.5em; color: #95a5a6; font-weight: normal; letter-spacing: 0;">
                     Nieoficjalny asystent rozgrywki
                 </span>
             </h1>
             
+            <button class="menu-btn" onclick="switchView('view-witchers')">
+                🐺 Wiedźmini<br><span style="font-size: 0.6em; font-weight: normal;">Losowanie Szkół</span>
+            </button>
+            
             <button class="menu-btn" onclick="switchView('view-tokens')">
                 🏔️ Eksploracja<br><span style="font-size: 0.6em; font-weight: normal;">Żetony Obszarów i Słabości</span>
             </button>
             
-            <button class="menu-btn" onclick="switchView('view-witchers')">
-                🐺 Wiedźmini<br><span style="font-size: 0.6em; font-weight: normal;">Losowanie Szkół</span>
+            <button class="menu-btn" onclick="switchView('view-monsters')">
+                🐲 Bestiariusz<br><span style="font-size: 0.6em; font-weight: normal;">Losowanie Potworów</span>
             </button>
         </div>
     </div>
@@ -184,13 +236,11 @@
 
         <div class="witcher-setup">
             <label class="player-count-label">Liczba graczy:</label>
-            <div class="count-btn-group" id="player-buttons">
-                </div>
+            <div class="count-btn-group" id="player-buttons"></div>
             <button class="draw-btn" onclick="randomizeWitchers()">LOSUJ SZKOŁY</button>
         </div>
 
-        <ul id="witcher-results" class="witcher-result-list">
-            </ul>
+        <ul id="witcher-results" class="witcher-result-list"></ul>
     </div>
 
     <div id="view-tokens" class="app-section">
@@ -291,14 +341,67 @@
         </div>
     </div>
 
+    <div id="view-monsters" class="app-section">
+        <button class="back-btn" onclick="switchView('view-menu')">⬅ Menu</button>
+        <h1>Bestiariusz</h1>
+        <p class="subtitle">Losowanie Potworów wg Poziomów</p>
+
+        <div class="zones-container">
+            
+            <div class="zone-row">
+                <h2 class="zone-title title-lvl1">Potwór Poziom I</h2>
+                <div class="panel">
+                    <div class="result-box">
+                        <div id="res-m_lvl1" class="result">-</div>
+                        <div id="count-m_lvl1" class="status">...</div>
+                    </div>
+                    <button class="draw-btn btn-lvl1" onclick="drawMonster('lvl1')">LOSUJ POTWORA I</button>
+                    <div class="discard-section">
+                        <span class="discard-label label-lvl1">Wylosowane:</span>
+                        <div id="discard-m_lvl1" class="discard-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zone-row">
+                <h2 class="zone-title title-lvl2">Potwór Poziom II</h2>
+                <div class="panel">
+                    <div class="result-box">
+                        <div id="res-m_lvl2" class="result">-</div>
+                        <div id="count-m_lvl2" class="status">...</div>
+                    </div>
+                    <button class="draw-btn btn-lvl2" onclick="drawMonster('lvl2')">LOSUJ POTWORA II</button>
+                    <div class="discard-section">
+                        <span class="discard-label label-lvl2">Wylosowane:</span>
+                        <div id="discard-m_lvl2" class="discard-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zone-row">
+                <h2 class="zone-title title-lvl3">Potwór Poziom III</h2>
+                <div class="panel">
+                    <div class="result-box">
+                        <div id="res-m_lvl3" class="result">-</div>
+                        <div id="count-m_lvl3" class="status">...</div>
+                    </div>
+                    <button class="draw-btn btn-lvl3" onclick="drawMonster('lvl3')">LOSUJ POTWORA III</button>
+                    <div class="discard-section">
+                        <span class="discard-label label-lvl3">Wylosowane:</span>
+                        <div id="discard-m_lvl3" class="discard-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-monsters-btn" onclick="resetMonsters()">⚠️ Resetuj Wszystkie Potwory</button>
+
+        </div>
+    </div>
+
     <script>
         // === NAWIGACJA ===
         function switchView(viewId) {
-            // Ukryj wszystkie sekcje
-            document.querySelectorAll('.app-section').forEach(el => {
-                el.classList.remove('active-section');
-            });
-            // Pokaż wybraną
+            document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active-section'));
             document.getElementById(viewId).classList.add('active-section');
             window.scrollTo(0,0);
         }
@@ -310,12 +413,11 @@
             { name: "Żmii", icon: "🐍", style: "school-zmija" },
             { name: "Niedźwiedzia", icon: "🐻", style: "school-niedzwiedz" },
             { name: "Gryfa", icon: "🦅", style: "school-gryf" },
-            { name: "Mantikory", icon: "🦂", style: "school-mantikora" }
+            { name: "Mantikory", icon: "🦁", style: "school-mantikora" }
         ];
 
         let selectedPlayerCount = 1;
 
-        // Inicjalizacja przycisków wyboru graczy
         function initWitcherButtons() {
             const container = document.getElementById('player-buttons');
             for (let i = 1; i <= 6; i++) {
@@ -324,7 +426,6 @@
                 btn.innerText = i;
                 btn.onclick = () => {
                     selectedPlayerCount = i;
-                    // Reset stylów
                     document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
                 };
@@ -334,32 +435,23 @@
 
         function randomizeWitchers() {
             const list = document.getElementById('witcher-results');
-            list.innerHTML = ""; // Czyść listę
-
-            // Kopia tablicy i tasowanie
+            list.innerHTML = "";
             let pool = [...witcherSchools];
             for (let i = pool.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [pool[i], pool[j]] = [pool[j], pool[i]];
             }
-
-            // Przydzielanie
             for (let i = 0; i < selectedPlayerCount; i++) {
                 const witcher = pool[i];
                 const li = document.createElement('li');
                 li.className = `witcher-card ${witcher.style}`;
-                // Dodajemy opóźnienie animacji dla każdego elementu
                 li.style.animationDelay = `${i * 0.1}s`;
-                
-                li.innerHTML = `
-                    <span class="p-name">GRACZ ${i + 1}</span>
-                    <span class="w-school">${witcher.icon} Szkoła ${witcher.name}</span>
-                `;
+                li.innerHTML = `<span class="p-name">GRACZ ${i + 1}</span><span class="w-school">${witcher.icon} Szkoła ${witcher.name}</span>`;
                 list.appendChild(li);
             }
         }
 
-        // === LOGIKA ŻETONÓW (TWOJA) ===
+        // === LOGIKA ŻETONÓW (TERENY) ===
         const initialData = {
             gory: [2, 3, 9, 11, 13, 18, 19],
             las: [6, 7, 8, 10, 16, 17, 21],
@@ -373,19 +465,14 @@
 
         function initTokens() {
             for (let key in initialData) {
-                state[key] = {
-                    pool: [...initialData[key]],
-                    used: []
-                };
+                state[key] = { pool: [...initialData[key]], used: [] };
                 updateUI(key);
             }
         }
 
         function sortAccordingToConfig(type, array) {
             const masterOrder = initialData[type];
-            return array.sort((a, b) => {
-                return masterOrder.indexOf(a) - masterOrder.indexOf(b);
-            });
+            return array.sort((a, b) => masterOrder.indexOf(a) - masterOrder.indexOf(b));
         }
 
         function draw(type) {
@@ -429,9 +516,67 @@
             });
         }
 
+        // === LOGIKA POTWORÓW (NOWA) ===
+        const initialMonsterData = {
+            lvl1: ["Utopiec", "Mglak", "Krabopająk", "Barghest", "Nekker", "Zgnilec", "Ghul", "Harpia", "Archespor", "Ekimma"],
+            lvl2: ["Bies", "Baba Cmentarna", "Pokutnik", "Wilkołak", "Północnica", "Południca", "Mantikora", "Prządka", "Baba Wodna", "Szepciucha", "Wiwerna", "Gryf"],
+            lvl3: ["Kuchta", "Bruxa", "Strzyga", "Żagnica", "Skolopendromorf", "Troll", "Leszy"]
+        };
+
+        let monsterState = {};
+
+        function initMonsters() {
+            for (let key in initialMonsterData) {
+                monsterState[key] = { pool: [...initialMonsterData[key]], used: [] };
+                updateMonsterUI(key);
+            }
+        }
+
+        function drawMonster(level) {
+            const currentObj = monsterState[level];
+            if (currentObj.pool.length === 0) {
+                alert("Wszystkie potwory z tego poziomu zostały wylosowane!");
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * currentObj.pool.length);
+            const drawnItem = currentObj.pool.splice(randomIndex, 1)[0];
+            
+            // Dodajemy na początek listy (najnowszy pierwszy)
+            currentObj.used.unshift(drawnItem);
+            
+            document.getElementById(`res-m_${level}`).innerText = drawnItem;
+            updateMonsterUI(level);
+        }
+
+        function updateMonsterUI(level) {
+            const currentObj = monsterState[level];
+            document.getElementById(`count-m_${level}`).innerText = `W puli: ${currentObj.pool.length}`;
+            const container = document.getElementById(`discard-m_${level}`);
+            container.innerHTML = "";
+            currentObj.used.forEach(item => {
+                const token = document.createElement("div");
+                token.className = "monster-token"; // Klasa nieinteraktywna
+                token.innerText = item;
+                // Brak onclick = brak powrotu pojedynczego potwora
+                container.appendChild(token);
+            });
+        }
+
+        function resetMonsters() {
+            if (confirm("Czy na pewno chcesz zresetować wszystkie potwory do pełnej puli? (Nowa gra)")) {
+                initMonsters();
+                // Czyścimy wyświetlane wyniki
+                document.getElementById('res-m_lvl1').innerText = "-";
+                document.getElementById('res-m_lvl2').innerText = "-";
+                document.getElementById('res-m_lvl3').innerText = "-";
+                alert("Bestiariusz zresetowany!");
+            }
+        }
+
         // START APLIKACJI
         initTokens();
         initWitcherButtons();
+        initMonsters();
     </script>
 </body>
 </html>
